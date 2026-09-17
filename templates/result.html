@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Resume Created{% endblock %}
+{% block content %}
+<div class="result-page">
+  <div class="celebrate">
+    <div class="confetti">🎉 ✨ 🎊</div>
+    <h1>Congratulations!</h1>
+    <p class="lead">Your resume has been created successfully.</p>
+  </div>
+
+  <div class="score-grid">
+    <div class="score-card">
+      <small>Resume Score</small>
+      <strong>{{ resume.analysis.resume_score }}%</strong>
+    </div>
+    <div class="score-card">
+      <small>ATS Score</small>
+      <strong>{{ resume.analysis.ats_score }}%</strong>
+    </div>
+    <div class="score-card">
+      <small>Skills Found</small>
+      <strong>{{ resume.analysis.skills|length }}</strong>
+    </div>
+  </div>
+
+  <div class="result-actions">
+    <button type="button" class="btn primary" id="congratsDownloadPdf">
+      <i class="fa-solid fa-download"></i> Download PDF
+    </button>
+    <a class="btn secondary" href="{{ url_for('edit_resume', resume_id=resume_id) }}">Edit Resume</a>
+  </div>
+
+  <div class="builder-card">
+    <h2>Match your resume to a job</h2>
+    <form method="post" action="{{ url_for('match_job', resume_id=resume_id) }}">
+      <label>Job Description
+        <textarea name="job_description" rows="9" required placeholder="Paste the job description here..."></textarea>
+      </label>
+      <button class="btn primary" type="submit">Check Job Match</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById('congratsDownloadPdf');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+  var html = sessionStorage.getItem('rf_resume_html');
+  var name = sessionStorage.getItem('rf_resume_name') || 'resume';
+  if (!html) return;
+
+  function run(){
+    if (!window.html2pdf) return;
+
+    var wrap = document.createElement('div');
+    wrap.style.position = 'fixed';
+    wrap.style.left = '-9999px';
+    wrap.style.top = '0';
+    wrap.style.width = '794px';
+    wrap.style.background = '#fff';
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap);
+
+    var target = wrap.firstElementChild || wrap;
+    target.style.minHeight = '0';
+    target.style.height = 'auto';
+
+    html2pdf()
+      .set({
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          backgroundColor: '#ffffff'
+        }
+      })
+      .from(target)
+      .toCanvas()
+      .get('canvas')
+      .then(function(canvas){
+        var imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+        function buildPdf(JsPDF){
+          if (!JsPDF) {
+            document.body.removeChild(wrap);
+            return;
+          }
+          var pdf = new JsPDF('p', 'mm', 'a4');
+          var pageW = 210, pageH = 297, m = 6;
+          var maxW = pageW - m * 2, maxH = pageH - m * 2;
+          var w = maxW;
+          var h = (canvas.height * w) / canvas.width;
+          if (h > maxH) {
+            h = maxH;
+            w = (canvas.width * h) / canvas.height;
+          }
+          var x = (pageW - w) / 2;
+          pdf.addImage(imgData, 'JPEG', x, m, w, h);
+          while (pdf.internal.getNumberOfPages() > 1) {
+            pdf.deletePage(pdf.internal.getNumberOfPages());
+          }
+          pdf.save(name + '_resume.pdf');
+          document.body.removeChild(wrap);
+        }
+
+        var JsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF || null;
+        if (JsPDF) {
+          buildPdf(JsPDF);
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+        s.onload = function(){
+          JsPDF = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+          if (JsPDF) buildPdf(JsPDF);
+          else document.body.removeChild(wrap);
+        };
+        document.head.appendChild(s);
+      }, function(){
+        document.body.removeChild(wrap);
+      });
+  }
+
+  if (window.html2pdf) run();
+  else {
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    s.onload = run;
+    document.head.appendChild(s);
+  }
+});
+})();
+</script>
+{% endblock %}

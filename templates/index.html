@@ -1,0 +1,874 @@
+ {% extends "base.html" %}
+
+{% block title %}ResumeForge AI | Build Your Professional Resume{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+
+    <div class="hero-text">
+
+        <span class="badge">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            AI Resume Studio
+        </span>
+
+        <h1>
+            Build a resume that
+            <span>gets noticed.</span>
+        </h1>
+
+        <p>
+            Create a professional, ATS-friendly resume from scratch,
+            upload an existing resume, improve your content with AI,
+            and match your resume with job descriptions.
+        </p>
+
+        <div class="hero-actions">
+
+            <a class="btn primary" href="{{ url_for('choose_mode') }}">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Create My Resume
+            </a>
+
+            <a class="btn secondary" href="{{ url_for('upload_resume') }}">
+                <i class="fa-solid fa-file-arrow-up"></i>
+                Upload My Resume
+            </a>
+
+        </div>
+
+        <p class="trust">
+            <i class="fa-solid fa-circle-check"></i>
+            Free college-project demo
+            &nbsp; • &nbsp;
+            <i class="fa-solid fa-circle-check"></i>
+            ATS-friendly
+            &nbsp; • &nbsp;
+            <i class="fa-solid fa-circle-check"></i>
+            Editable templates
+        </p>
+
+    </div>
+
+
+    <!-- RESUME VISUAL -->
+    <div class="hero-art">
+
+        <div class="floating-card card-one">
+
+            <div>
+                <i class="fa-solid fa-chart-line"></i>
+                <strong>92%</strong>
+            </div>
+
+            <small>ATS Ready</small>
+
+        </div>
+
+
+        <div class="resume-mock">
+
+            <div class="mock-head">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="mock-profile">
+
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="profile-lines">
+
+                    <div class="line big"></div>
+
+                    <div class="line short"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="mock-section">
+                EXPERIENCE
+            </div>
+
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line short"></div>
+
+
+            <div class="mock-section">
+                EDUCATION
+            </div>
+
+            <div class="line"></div>
+            <div class="line short"></div>
+
+
+            <div class="mock-section">
+                SKILLS
+            </div>
+
+            <div class="chips">
+
+                <b>Python</b>
+                <b>SQL</b>
+                <b>HTML</b>
+                <b>CSS</b>
+
+            </div>
+
+        </div>
+
+
+        <div class="floating-card card-two">
+
+            <div>
+                <i class="fa-solid fa-bullseye"></i>
+                <strong>Job Match</strong>
+            </div>
+
+            <small>
+                Skills + similarity
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+<div class="features-heading">
+
+    <span class="mini-badge">
+        HOW IT WORKS
+    </span>
+
+    <h2>
+        Everything You Need to Build a Better Resume
+    </h2>
+
+    <p>
+        Create, analyze, customize, and match your resume with ResumeForge AI.
+    </p>
+
+</div>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+            <i class="fa-solid fa-file-circle-check"></i>
+        </div>
+
+        <h3>
+            Smart Resume Builder
+        </h3>
+
+        <p>
+            Build your resume step-by-step with structured
+            sections for education, skills, projects and experience.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+        </div>
+
+        <h3>
+            Resume Analyzer
+        </h3>
+
+        <p>
+            Analyze your resume and receive useful ATS-style
+            insights, scores and detected skills.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+            <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <h3>
+            Job Matcher
+        </h3>
+
+        <p>
+            Compare your resume with a job description and
+            identify matched and missing skills.
+        </p>
+
+    </div>
+
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+            <i class="fa-solid fa-palette"></i>
+        </div>
+
+        <h3>
+            Professional Templates
+        </h3>
+
+        <p>
+            Choose from Professional, Modern, Minimal,
+            Creative and Student resume templates.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- JOB MATCH SECTION -->
+<section class="section job-match-section" id="job-match">
+
+    <div class="job-match-header">
+
+        <span class="job-match-badge">
+            AI Job Matcher
+        </span>
+
+        <h2>
+            Match Your Resume With a Job
+        </h2>
+
+        <p>
+            Upload your resume and paste the job description to identify
+            the skills that match and the skills you are missing.
+        </p>
+
+    </div>
+
+
+            <form class="job-match-form"
+              method="POST"
+              action="{{ url_for('home_job_match') }}"
+              enctype="multipart/form-data"
+              id="homeJobMatchForm">
+
+
+                        <div class="job-match-input" id="resumeDropZone">
+
+                <div class="job-match-icon">
+                    📄
+                </div>
+
+                <div>
+
+                    <h3>
+                        Use Your Resume
+                    </h3>
+
+                    <p>
+                        Upload your existing PDF or DOCX resume. Drag & drop or choose a file.
+                    </p>
+
+                    <label class="job-file-label" id="chooseResumeBtn">
+                        Choose Resume
+                        <input
+                            type="file"
+                            name="resume"
+                            id="resumeFileInput"
+                            accept=".pdf,.docx"
+                            required
+                        >
+                    </label>
+
+                    <div id="resumeFileName" style="margin-top:10px;font-size:13px;color:#8d3269;font-weight:600;"></div>
+
+                </div>
+
+            </div>
+
+            <div class="job-match-input">
+
+                <div class="job-match-icon">
+                    💼
+                </div>
+
+                <div>
+
+                    <h3>
+                        Job Description
+                    </h3>
+
+                    <p>
+                        Paste the job description you want to match against.
+                    </p>
+
+                    <textarea
+                        name="job_description"
+                        rows="8"
+                        placeholder="Paste the complete job description here..."
+                        required></textarea>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn primary job-match-action">
+
+                Analyze Job Match →
+
+            </button>
+
+
+            <p class="job-match-note">
+
+                The analysis will show only the
+                <strong>Matched Skills</strong>
+                and
+                <strong>Missing Skills</strong>
+                based on your actual resume and job description.
+
+            </p>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<style>
+
+.features-heading {
+    max-width: 800px;
+    margin: 80px auto 35px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.features-heading .mini-badge {
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.features-heading h2 {
+    margin: 0 0 12px;
+    font-size: 36px;
+}
+
+.features-heading p {
+    margin: 0 auto;
+    color: #666;
+    line-height: 1.7;
+    max-width: 650px;
+
+}   
+
+@media (max-width: 700px) {
+
+    .features-heading {
+        margin-top: 60px;
+    }
+
+    .features-heading h2 {
+        font-size: 30px;
+    }
+
+    .job-match-section {
+        padding: 60px 15px;
+    }
+
+    .job-match-header h2 {
+        font-size: 30px;
+    }
+
+    .job-match-card {
+        padding: 20px;
+    }
+
+    .job-match-input {
+        flex-direction: column;
+    }
+}
+
+.job-match-section {
+    padding: 90px 20px;
+    background: #fffaf2;
+}
+
+.job-match-header {
+    max-width: 760px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.job-match-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: #ffe4ed;
+    color: #c94772;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.job-match-header h2 {
+    margin: 0 0 12px;
+    font-size: 38px;
+}
+
+.job-match-header p {
+    margin: 0;
+    color: #666;
+    line-height: 1.7;
+}
+
+.job-match-card {
+    max-width: 950px;
+    margin: auto;
+    background: #ffffff;
+    border: 1px solid #eadfd5;
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 15px 45px rgba(70, 45, 80, 0.08);
+}
+
+.job-match-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.job-match-input {
+    display: flex;
+    gap: 18px;
+    padding: 25px;
+    background: #fcefe7;
+    border: 1px solid #eadfd5;
+    border-radius: 18px;
+}
+
+.job-match-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffe4ed;
+    border-radius: 14px;
+    font-size: 22px;
+}
+
+.job-match-input h3 {
+    margin: 0 0 6px;
+}
+
+.job-match-input p {
+    margin: 0 0 15px;
+    color: #777;
+}
+
+.job-file-label {
+    display: inline-block;
+    padding: 11px 18px;
+    background: #f8d5e1;
+    color: #c94772;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-file-label input {
+    display: none;
+}
+
+
+
+.job-match-input textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 14px;
+    border: 1px solid #ddd2e2;
+    border-radius: 12px;
+    resize: vertical;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.job-match-action {
+    align-self: center;
+    border: none;
+    cursor: pointer;
+}
+
+.job-match-note {
+    text-align: center;
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+</style>
+
+
+<script>
+(function () {
+  var input = document.getElementById('resumeFileInput');
+  var btn = document.getElementById('chooseResumeBtn');
+  var nameEl = document.getElementById('resumeFileName');
+  var zone = document.getElementById('resumeDropZone');
+  var form = document.getElementById('homeJobMatchForm');
+  if (!input || !btn || !zone || !form) return;
+
+  function setFile(file) {
+    if (!file) return;
+    if (!/\.(pdf|docx)$/i.test(file.name)) {
+      nameEl.textContent = 'Only PDF or DOCX allowed';
+      input.value = '';
+      return;
+    }
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    nameEl.textContent = 'Selected: ' + file.name;
+  }
+
+  btn.addEventListener('click', function () { input.click(); });
+  input.addEventListener('change', function () {
+    if (input.files && input.files[0]) setFile(input.files[0]);
+  });
+
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    zone.addEventListener(ev, function (e) {
+      e.preventDefault(); e.stopPropagation();
+      zone.classList.add('drag-over');
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    zone.addEventListener(ev, function (e) {
+      e.preventDefault(); e.stopPropagation();
+      zone.classList.remove('drag-over');
+    });
+  });
+  zone.addEventListener('drop', function (e) {
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) setFile(f);
+  });
+
+  form.addEventListener('submit', function (e) {
+    if (!input.files || !input.files.length) {
+      e.preventDefault();
+      nameEl.textContent = 'Please choose a resume file first';
+    }
+  });
+})();
+</script>
+
+
+
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+
+    <div class="section-heading">
+
+        <span class="mini-badge">
+            SIMPLE PROCESS
+        </span>
+
+        <h2>
+            Create your resume in a few steps
+        </h2>
+
+        <p>
+            ResumeForge AI keeps the process simple while giving
+            you professional results.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                01
+            </div>
+
+            <h3>
+                Choose
+            </h3>
+
+            <p>
+                Start from scratch or upload your existing resume.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                02
+            </div>
+
+            <h3>
+                Build
+            </h3>
+
+            <p>
+                Add your personal details, education, skills,
+                projects and achievements.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                03
+            </div>
+
+            <h3>
+                Improve
+            </h3>
+
+            <p>
+                Use AI-powered features to improve your resume content.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                04
+            </div>
+
+            <h3>
+                Download
+            </h3>
+
+            <p>
+                Analyze your resume and generate your final PDF.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- AI SECTION -->
+<section class="ai-section">
+
+    <div class="ai-content">
+
+        <span class="mini-badge">
+            AI POWERED
+        </span>
+
+        <h2>
+            Make your resume stronger with AI
+        </h2>
+
+        <p>
+            ResumeForge AI helps you improve descriptions,
+            generate professional summaries, identify relevant
+            skills and evaluate your resume.
+        </p>
+
+        <div class="ai-points">
+
+            <div>
+                <i class="fa-solid fa-check"></i>
+                AI-assisted professional summary
+            </div>
+
+            <div>
+                <i class="fa-solid fa-check"></i>
+                Skill suggestions
+            </div>
+
+            <div>
+                <i class="fa-solid fa-check"></i>
+                Resume analysis
+            </div>
+
+            <div>
+                <i class="fa-solid fa-check"></i>
+                Job matching
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="ai-visual">
+
+        <div class="ai-window">
+
+            <div class="ai-window-top">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+            <div class="ai-message">
+
+                <div class="ai-icon">
+                    <i class="fa-solid fa-sparkles"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        ResumeForge AI
+                    </strong>
+
+                    <p>
+                        Your resume looks strong. Consider adding
+                        measurable achievements to improve impact.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-score">
+
+                <div>
+                    <small>ATS SCORE</small>
+                    <strong>92</strong>
+                </div>
+
+                <div>
+                    <small>SKILLS</small>
+                    <strong>18</strong>
+                </div>
+
+                <div>
+                    <small>MATCH</small>
+                    <strong>87%</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="cta-section">
+
+    <div>
+
+        <i class="fa-solid fa-wand-magic-sparkles cta-icon"></i>
+
+        <h2>
+            Ready to build your resume?
+        </h2>
+
+        <p>
+            Create a polished resume and take the next step
+            toward your career.
+        </p>
+
+        {% if current_user %}
+        <a href="{{ url_for('choose_mode') }}" class="btn primary big">
+            <i class="fa-solid fa-arrow-right"></i>
+            Start Building
+        </a>
+        {% else %}
+        <a href="{{ url_for('signup') }}" class="btn primary big">
+            <i class="fa-solid fa-arrow-right"></i>
+            Start Building
+        </a>
+        {% endif %}
+
+    </div>
+
+</section>
+
+<script>
+(function () {
+  var input = document.getElementById('resumeFileInput');
+  var nameEl = document.getElementById('resumeFileName');
+  var zone = document.getElementById('resumeDropZone');
+  var form = document.getElementById('homeJobMatchForm');
+  if (!input || !zone || !form) return;
+
+  function setFile(file) {
+    if (!file) return;
+    if (!/\.(pdf|docx)$/i.test(file.name)) {
+      if (nameEl) nameEl.textContent = 'Only PDF or DOCX allowed';
+      input.value = '';
+      return;
+    }
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    if (nameEl) nameEl.textContent = 'Selected: ' + file.name;
+  }
+
+  input.addEventListener('change', function () {
+    if (input.files && input.files[0]) setFile(input.files[0]);
+  });
+
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    zone.addEventListener(ev, function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.style.border = '1px solid #d8b4fe';
+      zone.style.background = '#f5e9ff';
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    zone.addEventListener(ev, function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      zone.style.border = '';
+      zone.style.background = '';
+    });
+  });
+  zone.addEventListener('drop', function (e) {
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) setFile(f);
+  });
+})();
+</script>
+{% endblock %} 
+
+
+
+
+
+
+
+

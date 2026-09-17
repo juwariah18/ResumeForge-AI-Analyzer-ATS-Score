@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Job Match{% endblock %}
+{% block content %}
+<div class="result-page">
+  <span class="badge">Job Matcher</span>
+  <h1>Your Job Match</h1>
+  <div class="match-score">{{ result.score }}%</div>
+  <div class="match-grid">
+    <div class="builder-card">
+      <h2>Matched Skills</h2>
+      {% for s in result.matched %}
+        <span class="edit-chip">{{ s }}</span>
+      {% else %}
+        <p>No matching skills detected.</p>
+      {% endfor %}
+    </div>
+    <div class="builder-card">
+      <h2>Missing Skills</h2>
+      {% for s in result.missing %}
+        <span class="edit-chip missing">{{ s }}</span>
+      {% else %}
+        <p>No missing skills detected.</p>
+      {% endfor %}
+    </div>
+  </div>
+  <p class="lead">Text similarity: {{ result.similarity }}%</p>
+  {% if resume_id %}
+  <a class="btn primary" href="{{ url_for('resume_result', resume_id=resume_id) }}">Back to Resume</a>
+  {% else %}
+  <a class="btn primary" href="{{ url_for('home') }}">Back to Home</a>
+  {% endif %}
+</div>
+{% endblock %}
